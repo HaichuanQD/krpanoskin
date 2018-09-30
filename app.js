@@ -717,6 +717,17 @@ var controlarea = (function (panodata,panoUI,options){
         krpano.set("hotspot["+id+"].onDragEnd", 'copy(data[curhspos].idp,hotspot[' + id + '].name);copy(data[curhspos].athp,hotspot[' + id + '].ath);copy(data[curhspos].atvp,hotspot[' + id + '].atv);jscall(var event = document.createEvent("Event");event.initEvent("hsdrgcomp", true, true);krpano.dispatchEvent(event););');
     };
 
+    var adddatahotspot = function(id,ath,atv){
+        /* 添加热点直接动作 热点的选项在此设置  */
+        krpano.call("addhotspot(" + id + ")");
+        krpano.set("hotspot["+id+"].url", "comment.png");
+        krpano.set("hotspot["+id+"].ath", ath);
+        krpano.set("hotspot["+id+"].atv", atv);
+        krpano.set("hotspot["+id+"].distorted", false);
+        
+        
+    };
+
     var  clickaddhotspots = function(){
         
 	
@@ -751,11 +762,20 @@ var controlarea = (function (panodata,panoUI,options){
     var loadhotpots = function(arr){
 
          arr.forEach(function(element){
-             addhotspot(element.id,element.ath,element.atv);
+             addhotspot('hs'+element.id,element.ath,element.atv);
 
          });
 
-    }
+    };
+
+    var loaddatahotpots = function(arr){
+
+        arr.forEach(function(element){
+            adddatahotspot('hs'+element.id,element.ath,element.atv);
+
+        });
+
+   }; 
 
 
     
@@ -825,12 +845,28 @@ var pointerclick = function(opt){
                 var a = krpano.get("xml.scene");
                 var id = a.split("_")[1];
                 var thumbname = '.thumb_'+id;
+                var arr;
                 $(".activethumbs").addClass("readed");
                 $(".activethumbs").removeClass("activethumbs");
                 $(thumbname).parent().addClass("activethumbs");
                 scrollthumb(id);
-                console.log(commetpos);
+
+                $.ajax({
+                    url:'data.php',
+                    method:'POST',
+                    data:{scene: a },
+                    dataType:'JSON',
+                    success:function(data){
+                        arr = data;
+                        loaddatahotpots(arr);
+                    },
+                    error:function(){
+                        console.log('wrong')
+                    }
+                })
                 loadhotpots(commetpos[a]);
+                
+                
              }, false);
 
              krpano.addEventListener('hsdrgcomp',function(){
@@ -862,7 +898,8 @@ var pointerclick = function(opt){
                         'id':id,
                         'ath':ha,
                         'atv':va,
-                     })
+                     });
+                     console.log('heool');
                  }
                 } else {
                     console.log('error#009');

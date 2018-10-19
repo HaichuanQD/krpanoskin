@@ -7,7 +7,7 @@ $( document ).ready(function() {
 		id : "krpanoSWFObject",
  		xml:"tour.xml", 
  		target:"pano", 
- 		html5:"auto", 
+ 		html5:"only", 
  		mobilescale:1.0, 
  		passQueryParameters:true,
  		consolelog : true,					// trace krpano messages also to the browser console
@@ -16,7 +16,8 @@ $( document ).ready(function() {
 
 		function krpano_onready_callback(krpano_interface)
 			{
-				krpano = krpano_interface;
+                krpano = krpano_interface;
+                
             }
             
             var commetpos;
@@ -695,7 +696,7 @@ var controlarea = (function (panodata,panoUI,options){
         krpano.call('loadscene(scene_'+clickid+',null,MERGE, BLEND(0.5)');
     
         };
-        console.log('krpano.aabc');
+        
     
     };
     
@@ -705,16 +706,50 @@ var controlarea = (function (panodata,panoUI,options){
         this.ath = ath,
         this.atv = atv
     };
+
+    var meastr = function(str){
+        var w ;
+        $('#measure').text(str);
+        w =  $('#measure').outerWidth() + 22;
+        return w
+
+    }
     
     var addhotspot = function(id,ath,atv){
         /* 添加热点直接动作 热点的选项在此设置  */
-        krpano.call("addhotspot(" + id + ")");
-        krpano.set("hotspot["+id+"].url", "comment.png");
-        krpano.set("hotspot["+id+"].ath", ath);
-        krpano.set("hotspot["+id+"].atv", atv);
-        krpano.set("hotspot["+id+"].distorted", false);
-        krpano.call("hotspot["+id+"].loadstyle(dragablehotspot)");
-        krpano.set("hotspot["+id+"].onDragEnd", 'copy(data[curhspos].idp,hotspot[' + id + '].name);copy(data[curhspos].athp,hotspot[' + id + '].ath);copy(data[curhspos].atvp,hotspot[' + id + '].atv);jscall(var event = document.createEvent("Event");event.initEvent("hsdrgcomp", true, true);krpano.dispatchEvent(event););');
+        // krpano.call("addhotspot(" + id + ")");
+        // krpano.set("hotspot["+id+"].ath", ath);
+        // krpano.set("hotspot["+id+"].atv", atv);
+        // krpano.call("hotspot[" + id +"].loadstyle(comment)");
+        // krpano.set("hotspot["+id+"].onloaded", 'registercontentsize(40,40);');
+        // krpano.set("hotspot["+id+"].onclick", 'trace(ath);trace(atv);');
+        //krpano.call("hotspot["+id+"].loadstyle(dragablehotspot)");
+        //krpano.set("hotspot["+id+"].onDragEnd", 'copy(data[curhspos].idp,hotspot[' + id + '].name);copy(data[curhspos].athp,hotspot[' + id + '].ath);copy(data[curhspos].atvp,hotspot[' + id + '].atv);jscall(var event = document.createEvent("Event");event.initEvent("hsdrgcomp", true, true);krpano.dispatchEvent(event););');
+
+        /*添加附着热点*/
+
+         krpano.call("addhotspot(" + id +'s'+ ")");
+        // // krpano.set("hotspot[" + id +'s'+"].renderer", "css3d");
+         krpano.set("hotspot[" + id +'s'+"].ath", ath);
+         krpano.set("hotspot[" + id +'s'+"].atv", atv);
+         
+         krpano.set("hotspot[" + id +'s'+"].edge", 'left');
+         krpano.call("hotspot[" + id +'s'+"].loadstyle(comment)");
+         krpano.set("hotspot[" + id +'s'+"].onloaded",'registercontentsize(146,40);set(sprite.id,hss);edit_sprite(get(name), 留言留言留言言)');//edit_sprite(get(name),留言留言留言言)
+        
+        console.log(meastr('留言留言留言言'));
+        
+
+        // $('#wocaonimadachoubi').text('wocaonimadachoubi');
+
+        // onloaded="set(a,get(name));edit_sprite(get(a));
+        
+        // krpano.set("hotspot[" + id +'s'+"].distorted", false);
+        
+        /*附着热点跟着热点动，在屏幕上看保持同步*/
+        // krpano.set("hotspot[" + id +'s'+"].pos",'set(a,get(hotspot['+id+'].ath));set(b,get(hotspot['+id+'].atv));spheretoscreen(a,b,x,y);calc(tox,x+170);screentosphere(tox,y,h,v);copy(ath,h);copy(atv,v);'); 
+        // krpano.set("hotspot[" + id +'s'+"].onloaded", 'asyncloop(true,pos(););');
+        
     };
 
     var adddatahotspot = function(id,ath,atv){
@@ -724,6 +759,7 @@ var controlarea = (function (panodata,panoUI,options){
         krpano.set("hotspot["+id+"].ath", ath);
         krpano.set("hotspot["+id+"].atv", atv);
         krpano.set("hotspot["+id+"].distorted", false);
+        console.log('添加');
         
         
     };
@@ -859,12 +895,14 @@ var pointerclick = function(opt){
                     success:function(data){
                         arr = data;
                         loaddatahotpots(arr);
+                        console.log('Database hotspots loaded successfully!')
                     },
                     error:function(){
                         console.log('wrong')
                     }
                 })
                 loadhotpots(commetpos[a]);
+                console.log(commetpos);
                 
                 
              }, false);

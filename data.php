@@ -7,6 +7,7 @@ if(isset($_POST['scene'])){
         $data['id'] = $row['id'];
         $data['ath'] = $row['ath'];
         $data['atv'] = $row['atv'];
+        $data['text'] = $row['text'];
 
         $array[] = $data;
     }

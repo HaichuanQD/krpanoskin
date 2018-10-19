@@ -132,6 +132,29 @@ calc(layer[testmask].rotate, view.hlookat-layer[get(layer[testmask].parent)].ro)
 </action>
 
 <style name="button" url="http://image.nanbeiji360.com/qdpoly/newskin/buttons.png" width="40" height="40" align="left" />
+<style name="comment" renderer="css3d"  	 distorted="false" url="black.png" />
+<style name="comp" comp="true"  />
+
+
+<action name="edit_sprite" type="Javascript">
+
+var hs = krpano.get('hotspot['+args[1]+']');
+
+
+hs.sprite.id=args[1];
+document.getElementById(args[1]).style.cssText = 'position:absolute;background:none; border-radius: 5px;background-color:rgba(0,0,0,0.9);padding:9px;';
+<!-- 必须要有absolute属性 -->
+
+
+
+document.getElementById(args[1]).innerHTML = args[2];
+
+
+
+
+
+
+</action>
 
 
 <!-- 可拖拽热点属性 -->
@@ -140,6 +163,8 @@ calc(layer[testmask].rotate, view.hlookat-layer[get(layer[testmask].parent)].ro)
        ondown="spheretoscreen(ath,atv,hotspotcenterx,hotspotcentery); sub(drag_adjustx,mouse.stagex,hotspotcenterx); sub(drag_adjusty,mouse.stagey,hotspotcentery); if(onDragStart!==null, onDragStart() ); dragging();"
 	   
        />
+
+<style name = 'tweenin' alpha="0" onloaded="tween(alpha,1);"/>
 
 
 <layer name="control_skin" type="container" align="center" width="100%" height="100%" keep="true" visible="false" ><!--皮肤大母子-->
@@ -432,8 +457,8 @@ txtadd(dangqianchangfloorpoint, 'floorpoint_', get(scene[get(xml.scene)].index))
 		
 	</action>
 
-<autorotate enabled="true"
-waittime="3" accel="0.1" speed="0.5"/>
+ <!-- <autorotate enabled="true"
+waittime="3" accel="0.1" speed="0.5"/>  -->
 
 <plugin name="options" url="plugins/options.swf" keep="true"/>
 
@@ -462,7 +487,7 @@ waittime="3" accel="0.1" speed="0.5"/>
 		</image>
 
 		<!-- place your scene hotspots here -->
-		<hotspot name="spot1" style="skin_hotspotstyle" ath="99.881" atv="25.325" linkedscene="scene_2" linkedscene_lookat="283.10,0.5,120" />
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="99.881" atv="25.325" linkedscene="scene_2" linkedscene_lookat="283.10,0.5,120" renderer="css3d" />
 		<hotspot name="spot2" style="skin_hotspotstyle" ath="-177.347" atv="23.188" linkedscene="scene_3" linkedscene_lookat="352.89,0.5,120" />
 
 	</scene>
